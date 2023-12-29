@@ -1,6 +1,7 @@
 # Self-defined
 .DS_Store
 *.csv
+log/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
