@@ -1,6 +1,6 @@
 # Self-defined
 .DS_Store
-*.csv
+results/
 log/
 
 # Byte-compiled / optimized / DLL files
