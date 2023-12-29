@@ -1,0 +1,21 @@
+2023-12-28 17:54:46 | Logger initialized.
+2023-12-28 17:54:46 | =====Configurations=====
+2023-12-28 17:54:46 | seed: 0
+2023-12-28 17:54:46 | track: a
+2023-12-28 17:54:46 | tgt_lan: eng
+2023-12-28 17:54:46 | method: base
+2023-12-28 17:54:46 | CURR_PATH: ./
+2023-12-28 17:54:46 | RESOURCE_PATH: ./res
+2023-12-28 17:54:46 | DATA_PATH: ./res/data
+2023-12-28 17:54:46 | TRACK_PATH: ./res/data/a
+2023-12-28 17:54:46 | LAN_PATH: ./res/data/a/eng
+2023-12-28 17:54:46 | TRAIN_CSV: ./res/data/a/eng/eng_train.csv
+2023-12-28 17:54:46 | DEV_CSV: ./res/data/a/eng/eng_dev.csv
+2023-12-28 17:54:46 | LOG_PATH: ./res/log/a/eng/base/0
+2023-12-28 17:54:46 | LOG_TXT: ./res/log/a/eng/base/0/console_log.txt
+2023-12-28 17:54:46 | RESULTS_PATH: ./res/results/a/eng/base
+2023-12-28 17:54:46 | RESULTS_CSV: ./res/results/a/eng/base/0.csv
+2023-12-28 17:54:46 | =====Dev=====
+2023-12-28 17:54:46 | Data loaded.
+2023-12-28 17:54:46 | Results saved as ./res/results/a/eng/base/0.csv.
+2023-12-28 17:54:46 | Done.
