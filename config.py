@@ -51,7 +51,8 @@ class Config(object):
         os.remove(self.LOG_TXT) if os.path.exists(self.LOG_TXT) else None
         # results
         self.RESULTS_PATH = os.path.join(
-            self.RESOURCE_PATH, 'results', self.track, self.tgt_lan, self.method
+            self.RESOURCE_PATH, 'results', self.track, self.tgt_lan, self.method, str(self.seed)
             )
         os.makedirs(self.RESULTS_PATH, exist_ok=True)
-        self.RESULTS_CSV = os.path.join(self.RESULTS_PATH, f'{self.seed}.csv')
+        self.RESULTS_CSV = os.path.join(self.RESULTS_PATH, f'pred_{self.tgt_lan}_{self.track}.csv')
+        self.RESULTS_ZIP = os.path.join(self.RESULTS_PATH, f'pred_{self.tgt_lan}_{self.track}.csv.zip')

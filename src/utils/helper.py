@@ -7,6 +7,7 @@ __email__ = 'Email'
 # dependency
 # built-in
 import sys
+import zipfile
 import logging
 # private
 from src.methods import base
@@ -23,7 +24,7 @@ def str2bool(v):
     raise argparse.ArgumentTypeError('Boolean value expected.')
 
 def init_logger(config):
-    """initialize the logger"""
+    # initialize the logger
     file_handler = logging.FileHandler(filename=config.LOG_TXT)
     stdout_handler = logging.StreamHandler(stream=sys.stdout)
     handlers = [file_handler, stdout_handler]
@@ -36,6 +37,10 @@ def init_logger(config):
         )
     logger = logging.getLogger(__name__)
     return logger
+
+def zip_file(file_in, file_out):
+    with zipfile.ZipFile(file_out, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        zipf.write(file_in)
 
 def get_model(config):
     match config.method:

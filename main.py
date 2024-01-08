@@ -52,7 +52,9 @@ class SR(object):
             self.config.RESULTS_CSV
             , index=False
             )
-        self.logger.info('Results saved as {}.'.format(self.config.RESULTS_CSV))
+        helper.zip_file(self.config.RESULTS_CSV, self.config.RESULTS_ZIP)
+        self.logger.info(f'Results saved as {self.config.RESULTS_CSV}')
+        self.logger.info(f'Results zipped as {self.config.RESULTS_ZIP}')
         self.logger.info('Done.')
 
 def main():
