@@ -17,7 +17,9 @@ def init_args():
     # tracks
     parser.add_argument('--track', type=str, default='a', choices=['a', 'b', 'c'])
     # target languages
-    parser.add_argument('--tgt_lan', type=str, default='eng', choices=['eng'])
+    # dev for Spanish
+    parser.add_argument('--tgt_lan', type=str, default='eng'
+        , choices=['eng', 'dev', 'esp', 'spa', 'ind', 'arb', 'arq', 'ary', 'afr', 'amh', 'hau', 'hin', 'kin', 'mar', 'pan', 'tel'])
     # method
     # base for the official baseline method
     parser.add_argument('--method', type=str, default='base', choices=['base'])
