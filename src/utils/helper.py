@@ -6,9 +6,7 @@ __email__ = 'Email'
 
 # dependency
 # built-in
-import sys
-import zipfile
-import logging
+import os, sys, zipfile, logging
 # private
 from src.methods import base
 
@@ -40,7 +38,10 @@ def init_logger(config):
 
 def zip_file(file_in, file_out):
     with zipfile.ZipFile(file_out, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        zipf.write(file_in)
+        zipf.write(
+            file_in
+            , arcname=os.path.basename(file_in)
+            )
 
 def get_model(config):
     match config.method:
