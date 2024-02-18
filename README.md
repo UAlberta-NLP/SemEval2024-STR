@@ -34,7 +34,7 @@ $ python main.py
 * **Ning Shi** - ning.shi@ualberta.ca
 
 ## References
-+ SemEval 2024 Task 1: Semantic Textual Relatedness (STR).
++ SemEval 2024 Task 1: Semantic Textual Relatedness (STR). \
 [Dataset](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#dataset) | 
 [Languages](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#languages) | 
 [Shared Task Starter Kit](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#shared-task-starter-kit) | 
