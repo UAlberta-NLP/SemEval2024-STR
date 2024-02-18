@@ -14,7 +14,7 @@ Welcome to the SemEval 2024 Task 1: Semantic Textual Relatedness (STR) instructi
 + pandas >= 2.1.4
 
 ## Setup
-Please ensure required packages are already installed. A virtual environment is recommended.
+Please ensure the required packages are already installed. A virtual environment is recommended.
 ```
 $ cd SemEval2024-STR
 $ pip install pip --upgrade
@@ -32,3 +32,10 @@ $ python main.py
 
 ## Authors
 * **Ning Shi** - ning.shi@ualberta.ca
+
+## References
++ SemEval 2024 Task 1: Semantic Textual Relatedness (STR).
+[Dataset](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#dataset) | 
+[Languages](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#languages) | 
+[Shared Task Starter Kit](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#shared-task-starter-kit) | 
+[Citing This Work](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#citing-this-work)
