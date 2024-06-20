@@ -3,7 +3,7 @@ This repository is for the paper UAlberta at SemEval-2024 Task 1: A Potpourri of
 
 :trophy: 1st Place on Track A English among all submitted systems.
 
-[[Paper]()] [[Poster]()] [[Slides]()]
+[[Paper](https://github.com/UAlberta-NLP/SemEval2024-STR/blob/main/assets/paper.pdf)] [[Poster](https://github.com/UAlberta-NLP/SemEval2024-STR/blob/main/assets/poster.pdf)] [[Slides](https://github.com/UAlberta-NLP/SemEval2024-STR/blob/main/assets/slides.pdf)]
 
 ## Dependencies
 + python >= 3.11.9
