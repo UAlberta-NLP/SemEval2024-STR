@@ -5,8 +5,9 @@ This repository is for the paper UAlberta at SemEval-2024 Task 1: A Potpourri of
 
 [[Paper](https://github.com/UAlberta-NLP/SemEval2024-STR/blob/main/assets/paper.pdf)] [[Poster](https://github.com/UAlberta-NLP/SemEval2024-STR/blob/main/assets/poster.pdf)] [[Slides](https://github.com/UAlberta-NLP/SemEval2024-STR/blob/main/assets/slides.pdf)]
 
-## Dependencies
-+ python >= 3.11.9
+## Directory
++ **system** - Our submitted system
++ **tutorial** - Friendly guidance to start the task easily
 
 ## Authors
 * **Ning Shi** - mrshininnnnn@gmail.com
