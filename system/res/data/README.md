@@ -18,21 +18,24 @@ data
 
 ## BibTex
 ```
-@misc{ousidhoum2024semrel2024,
-      title={SemRel2024: A Collection of Semantic Textual Relatedness Datasets for 14 Languages}, 
-      author={Nedjma Ousidhoum and Shamsuddeen Hassan Muhammad and Mohamed Abdalla and Idris Abdulmumin and Ibrahim Said Ahmad and Sanchit Ahuja and Alham Fikri Aji and Vladimir Araujo and Abinew Ali Ayele and Pavan Baswani and Meriem Beloucif and Chris Biemann and Sofia Bourhim and Christine De Kock and Genet Shanko Dekebo and Oumaima Hourrane and Gopichand Kanumolu and Lokesh Madasu and Samuel Rutunda and Manish Shrivastava and Thamar Solorio and Nirmal Surange and Hailegnaw Getaneh Tilaye and Krishnapriya Vishnubhotla and Genta Winata and Seid Muhie Yimam and Saif M. Mohammad},
-      year={2024},
-      eprint={2402.08638},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{ousidhoum2024semrel2024,
+title={SemRel2024: A Collection of Semantic Textual Relatedness Datasets for 13 Languages}, 
+author={Ousidhoum, Nedjma and Muhammad, Shamsuddeen Hassan and Abdalla, Mohamed and Abdulmumin, Idris and Ahmad, Ibrahim Said and
+Ahuja, Sanchit and Aji, Alham Fikri and Araujo, Vladimir and Ayele, Abinew Ali and Baswani, Pavan and Beloucif, Meriem and Biemann, Chris and Bourhim, Sofia and De Kock, Christine and Dekebo, Genet Shanko and
+Oumaima Hourrane and Gopichand Kanumolu and Lokesh Madasu and Samuel Rutunda and Manish Shrivastava and Solorio, Thamar and Surange, Nirmal and Tilaye, Hailegnaw Getaneh and Vishnubhotla, Krishnapriya and Winata, Genta and Yimam, Seid Muhie and Mohammad, Saif M.},
+booktitle = "Findings of the Association for Computational Linguistics: ACL 2024",
+year = "2024",
+publisher = "Association for Computational Linguistics",
 }
 
-@misc{ousidhoum2024semeval,
-      title={SemEval Task 1: Semantic Textual Relatedness for African and Asian Languages}, 
-      author={Nedjma Ousidhoum and Shamsuddeen Hassan Muhammad and Mohamed Abdalla and Idris Abdulmumin and Ibrahim Said Ahmad and Sanchit Ahuja and Alham Fikri Aji and Vladimir Araujo and Meriem Beloucif and Christine De Kock and Oumaima Hourrane and Manish Shrivastava and Thamar Solorio and Nirmal Surange and Krishnapriya Vishnubhotla and Seid Muhie Yimam and Saif M. Mohammad},
-      year={2024},
-      eprint={2403.18933},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{ousidhoum-etal-2024-semeval, 
+title = "{S}em{E}val-2024 Task 1: Semantic Textual Relatedness for African and Asian Languages",
+author = "Ousidhoum, Nedjma and Muhammad, Shamsuddeen Hassan and Abdalla, Mohamed and Abdulmumin, Idris and
+Ahmad,Ibrahim Said and Ahuja, Sanchit and Aji, Alham Fikri and Araujo, Vladimir and     Beloucif, Meriem and
+De Kock, Christine and Hourrane, Oumaima and Shrivastava, Manish and Solorio, Thamar and Surange, Nirmal and
+Vishnubhotla, Krishnapriya and Yimam, Seid Muhie and Mohammad, Saif M.",
+booktitle = "Proceedings of the 18th International Workshop on Semantic Evaluation (SemEval-2024)",
+year = "2024",
+publisher = "Association for Computational Linguistics"
 }
 ```
