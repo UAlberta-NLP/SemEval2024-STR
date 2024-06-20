@@ -1,41 +1,17 @@
 # SemEval2024-STR
-Welcome to the SemEval 2024 Task 1: Semantic Textual Relatedness (STR) instructions repository. This repository is designed to guide participants through the task, providing resources, source code, and essential documentation for effective participation.
+This repository is for the paper UAlberta at SemEval-2024 Task 1: A Potpourri of Methods for Quantifying Multilingual Semantic Textual Relatedness and Similarity. In *Proceedings of the 18th International Workshop on Semantic Evaluation (SemEval-2024)*, Mexico City, Mexico. Association for Computational Linguistics.
 
-## Directory
-+ **res** - Resources including datasets, model weights, and experiment records
-+ **src** - Source code including methods, models, trainers, and utility functions
-+ **main.py** - The primary Python script to execute tasks and run experiments
-+ **config.py** - Configuration file containing essential settings
+:trophy: 1st Place on Track A English among all submitted systems.
+
+[[Paper]()] [[Poster]()] [[Slides]()]
 
 ## Dependencies
-+ Python >= 3.11.7
-+ jupyterlab >= 4.0.9
-+ numpy >= 1.26.2
-+ pandas >= 2.1.4
-
-## Setup
-Please ensure the required packages are already installed. A virtual environment is recommended.
-```
-$ cd SemEval2024-STR
-$ pip install pip --upgrade
-$ pip install jupyterlab
-$ pip install -r requirements.txt
-```
-To open the instructional Jupyter Notebook:
-```
-$ jupyter lab
-```
-To execute the main script and generate results:
-```
-$ python main.py
-```
++ python >= 3.11.9
 
 ## Authors
-* **Ning Shi** - ning.shi@ualberta.ca
+* **Ning Shi** - mrshininnnnn@gmail.com
 
-## References
-+ SemEval 2024 Task 1: Semantic Textual Relatedness (STR). \
-[Dataset](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#dataset) | 
-[Languages](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#languages) | 
-[Shared Task Starter Kit](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#shared-task-starter-kit) | 
-[Citing This Work](https://github.com/semantic-textual-relatedness/Semantic_Relatedness_SemEval2024#citing-this-work)
+## BibTex
+```
+TODO
+```
