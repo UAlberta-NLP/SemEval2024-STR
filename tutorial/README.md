@@ -44,12 +44,31 @@ $ python main.py
       primaryClass={cs.CL}
 }
 
-@misc{ousidhoum2024semeval,
-      title={SemEval Task 1: Semantic Textual Relatedness for African and Asian Languages}, 
-      author={Nedjma Ousidhoum and Shamsuddeen Hassan Muhammad and Mohamed Abdalla and Idris Abdulmumin and Ibrahim Said Ahmad and Sanchit Ahuja and Alham Fikri Aji and Vladimir Araujo and Meriem Beloucif and Christine De Kock and Oumaima Hourrane and Manish Shrivastava and Thamar Solorio and Nirmal Surange and Krishnapriya Vishnubhotla and Seid Muhie Yimam and Saif M. Mohammad},
-      year={2024},
-      eprint={2403.18933},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{ousidhoum-etal-2024-semeval,
+    title = "{S}em{E}val Task 1: Semantic Textual Relatedness for {A}frican and {A}sian Languages",
+    author = "Ousidhoum, Nedjma  and
+      Muhammad, Shamsuddeen Hassan  and
+      Abdalla, Mohamed  and
+      Abdulmumin, Idris  and
+      Ahmad, Ibrahim Said  and
+      Ahuja, Sanchit  and
+      Aji, Alham Fikri  and
+      Araujo, Vladimir  and
+      Beloucif, Meriem  and
+      De Kock, Christine",
+    editor = {Ojha, Atul Kr.  and
+      Do{\u{g}}ru{\"o}z, A. Seza  and
+      Tayyar Madabushi, Harish  and
+      Da San Martino, Giovanni  and
+      Rosenthal, Sara  and
+      Ros{\'a}, Aiala},
+    booktitle = "Proceedings of the 18th International Workshop on Semantic Evaluation (SemEval-2024)",
+    month = jun,
+    year = "2024",
+    address = "Mexico City, Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.semeval-1.272",
+    pages = "1963--1978",
+    abstract = "We present the first shared task on Semantic Textual Relatedness (STR). While earlier shared tasks primarily focused on semantic similarity, we instead investigate the broader phenomenon of semantic relatedness across 14 languages: Afrikaans, Algerian Arabic, Amharic, English, Hausa, Hindi, Indonesian, Kinyarwanda, Marathi, Moroccan Arabic, Modern Standard Arabic, Punjabi, Spanish, and Telugu. These languages originate from five distinct language families and are predominantly spoken in Africa and Asia {--} regions characterised by the relatively limited availability of NLP resources. Each instance in the datasets is a sentence pair associated with a score that represents the degree of semantic textual relatedness between the two sentences. Participating systems were asked to rank sentence pairs by their closeness in meaning (i.e., their degree of semantic relatedness) in the 14 languages in three main tracks: (a) supervised, (b) unsupervised, and (c) crosslingual. The task attracted 163 participants. We received 70 submissions in total (across all tasks) from 51 different teams, and 38 system description papers. We report on the best-performing systems as well as the most common and the most effective approaches for the three different tracks.",
 }
 ```
