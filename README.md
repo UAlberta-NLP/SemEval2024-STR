@@ -13,7 +13,7 @@ This repository is for the paper UAlberta at SemEval-2024 Task 1: A Potpourri of
 * **Ning Shi** - mrshininnnnn@gmail.com
 
 ## BibTex
-```
+```bibtex
 @inproceedings{shi-etal-2024-ualberta,
     title = "{UA}lberta at {S}em{E}val-2024 Task 1: A Potpourri of Methods for Quantifying Multilingual Semantic Textual Relatedness and Similarity",
     author = "Shi, Ning  and

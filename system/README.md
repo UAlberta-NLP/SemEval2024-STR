@@ -24,7 +24,7 @@ $ pip install -r requirements.txt
 
 ### FT-MPNet
 Run the following command to fine-tune MPNet.
-```
+```sh
 $ python sbert.py    
 seed: 0
 track: a
@@ -58,7 +58,7 @@ Target Language eng
 If MIX False
 Train Size 5500 5500 5500
 Val Size 250 250 250
-  0%|                                                                                            | 1/5472 [00:04<6:31:47,  4.30s/it]
+  0%|                                                                     | 1/5472 [00:04<6:31:47,  4.30s/it]
 ```
 
 ### Ensemble Modules
@@ -70,7 +70,7 @@ TODO
 
 ## BibTex
 Please use the following BibTeX entry to cite us:
-```
+```bibtex
 @inproceedings{shi-etal-2024-ualberta,
     title = "{UA}lberta at {S}em{E}val-2024 Task 1: A Potpourri of Methods for Quantifying Multilingual Semantic Textual Relatedness and Similarity",
     author = "Shi, Ning  and
