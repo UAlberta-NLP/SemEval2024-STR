@@ -15,7 +15,7 @@ Ensure you have the following dependencies installed:
 
 It is recommended to use a virtual environment to manage dependencies. Follow the steps below to set up the environment and install the required packages:
 
-```sh
+```bash
 $ pip install --upgrade pip
 $ pip install -r requirements.txt
 ```
@@ -24,7 +24,7 @@ $ pip install -r requirements.txt
 
 ### FT-MPNet
 Run the following command to fine-tune MPNet.
-```sh
+```bash
 $ python sbert.py    
 seed: 0
 track: a
