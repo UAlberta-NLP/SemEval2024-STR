@@ -33,8 +33,9 @@ class SR(object):
         self.logger = helper.init_logger(self.config)
         self.logger.info('Logger initialized.')
         self.logger.info('='*5 + 'Configurations' + '='*5)
-        for k, v in self.config.__dict__.items():
-            self.logger.info(f'{k}: {v}')
+        keys = ['track', 'tgt_lan', 'method', 'seed'] if self.config.method == 'base' else self.config.__dict__.keys()
+        for k in keys:
+            self.logger.info(f'{k}: {getattr(self.config, k)}')
         # get model
         self.model = helper.get_model(self.config)
 
