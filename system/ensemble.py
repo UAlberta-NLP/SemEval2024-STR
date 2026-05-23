@@ -11,7 +11,7 @@ to generate an ensemble prediction. Each method's prediction becomes a feature,
 and the ensemble learns weighted combinations.
 
 Usage:
-  python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,pi,t5,gpt2
+  python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,t5,gpt2,roberta
 """
 
 import os
@@ -30,7 +30,7 @@ def parse_args():
     parser.add_argument('--track', type=str, default='a', help='Track: a, b, c, d, or sts')
     parser.add_argument('--tgt_lan', type=str, default='eng', help='Target language')
     parser.add_argument('--seed', type=int, default=0, help='Random seed')
-    parser.add_argument('--methods', type=str, default='base,sbert,pi,t5,gpt2',
+    parser.add_argument('--methods', type=str, default='base,sbert,t5,gpt2,roberta',
                        help='Comma-separated list of methods to ensemble')
     return parser.parse_args()
 
@@ -110,7 +110,7 @@ def ensemble_method(config, methods, seed=0):
 
     Args:
         config: Config object with track, tgt_lan, seed settings
-        methods: List of method names to ensemble (e.g., ['base', 'sbert', 'pi', 't5', 'gpt2'])
+        methods: List of method names to ensemble (e.g., ['base', 'sbert', 't5', 'gpt2', 'roberta'])
         seed: Random seed
     """
     print('\n' + '='*60)

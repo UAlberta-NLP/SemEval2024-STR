@@ -253,11 +253,6 @@ def reproduce_paper(track, tgt_lan, seed, skip_methods=False):
     )
     print(f'  {ensemble_results}/')
 
-    print(f'\nNext Steps:')
-    print(f'  1. Review individual method results: res/results/{track}/{tgt_lan}/')
-    print(f'  2. Ensemble predictions: {ensemble_results}/')
-    print(f'  3. Submit to competition or conduct further analysis')
-
 
 if __name__ == '__main__':
     args = parse_args()

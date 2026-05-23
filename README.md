@@ -51,7 +51,6 @@ Additional methods explored: PI (Paraphrase Identification), NLI (Natural Langua
 │   ├── requirements.txt    # Dependencies
 │   └── res/               # Data, checkpoints, results (auto-generated)
 ├── tutorial/              # Educational implementation (simplified)
-├── CLAUDE.md              # Detailed documentation for developers
 ├── README.md              # This file
 └── assets/                # Paper, poster, slides
 
@@ -78,22 +77,22 @@ python finetune.py --model_name gpt2 --track a --tgt_lan eng --seed 0
 python finetune.py --model_name roberta --track a --tgt_lan eng --seed 0
 
 # Optional methods
-python pi.py --track a --tgt_lan eng --seed 0          # Paraphrase ID
+python pi.py --track a --tgt_lan eng --seed 0          # Paraphrase ID (optional)
 python nli.py --track a --tgt_lan eng --seed 0         # NLI (optional)
 
-# Ensemble
-python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,pi,t5,gpt2,roberta
+# Ensemble (XGB-4Ms)
+python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,t5,gpt2,roberta
 ```
 
-For detailed documentation, see [CLAUDE.md](CLAUDE.md).
+For detailed documentation on all methods and configuration, see `system/README.md`.
 
 ## Requirements
 
-- Python >= 3.11.9
-- PyTorch >= 2.3.1
-- Transformers >= 4.30.0
-- Sentence-Transformers >= 3.0.1
-- XGBoost >= 2.1.0
+- Python >= 3.11
+- PyTorch
+- Transformers
+- Sentence-Transformers >= 3.0
+- XGBoost
 
 Full dependencies in `system/requirements.txt`.
 

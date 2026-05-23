@@ -12,7 +12,7 @@ pip install -r requirements.txt
 python reproduce.py --track a --tgt_lan eng --seed 0
 ```
 
-This automatically trains all six methods, generates predictions, trains the ensemble, and reports metrics. Expected output: **0.854 Spearman correlation** on Track A English.
+This automatically trains all five methods, generates predictions, trains the XGB-4Ms ensemble, and reports metrics. Expected output: **0.854 Spearman correlation** on Track A English.
 
 ## Paper's Official System (XGB-4Ms Ensemble)
 
@@ -24,29 +24,31 @@ The paper's best system combines 4 fine-tuned transformer models using XGBoost:
 3. **FT-T5** — Fine-tuned T5-base with regression head (~82.3% Spearman)
 4. **FT-GPT2** — Fine-tuned GPT-2 with regression head (~82.9% Spearman)
 5. **FT-RoBERTa** — Fine-tuned RoBERTa-base with regression head (~83.6% Spearman)
-6. **PI** (Paraphrase Identification) — RoBERTa trained on paraphrase data, inferred on STR (~51% Spearman)
 
 **Ensemble**: XGBoost (XGB-4Ms) learns to combine T5, GPT2, RoBERTa, MPNet predictions
 - **Result**: **0.854 Spearman** on Track A English dev set (85.6% on test set)
-- **Command**: `python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,pi,t5,gpt2,roberta`
+- **Command**: `python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,t5,gpt2,roberta`
 
 **Optional/Exploratory Methods** (available but not in paper's official submission):
+- **PI** (pi.py) — Paraphrase Identification using RoBERTa trained on paraphrase data (~51% Spearman, requires separate paraphrase datasets)
 - **NLI** (nli.py) — Natural Language Inference using RoBERTa-NLI classifier (~64% Spearman, underperformed on some languages)
 - **TrackB** (trackb.py) — Unsupervised Track B ensemble combining BERT and RoBERTa
 - **AMR** (amr.py) — Abstract Meaning Representation parsing via external API (graph-based semantics exploration)
 
 ## Dependencies
 Ensure you have the following dependencies installed:
-+ python >= 3.11.9
-+ scikit-learn >= 1.5.0
-+ xgboost >= 2.1.0
-+ pandas >= 2.2.2
-+ torch >= 2.3.1
-+ datasets >= 2.20.0
-+ sentence-transformers >= 3.0.1
-+ transformers >= 4.30.0
-+ pytorch-lightning >= 2.0.0
-+ accelerate >= 0.31.0
++ python >= 3.11
++ scikit-learn
++ xgboost
++ pandas
++ torch
++ datasets
++ sentence-transformers >= 3.0
++ transformers
++ accelerate
++ lightning
++ torchmetrics
++ sentencepiece
 
 ## Setup
 
@@ -124,7 +126,7 @@ Output: `res/results/a/eng/nli/0/pred_eng_a.csv`
 
 ### 4. FT-T5 — Fine-tuned T5 with Regression Head
 Regression fine-tuning of T5-base for STR score prediction.
-**Hyperparameters**: batch_size=20, epochs=16, lr=2e-5, MSE loss
+**Hyperparameters**: batch_size=24, epochs=16, lr=2e-5, MSE loss
 **Paper Performance**: ~66% Spearman
 
 ```sh
@@ -159,12 +161,23 @@ PairID,Pred_Score
 1,0.87
 ```
 
-### 6. Ensemble — XGBoost Combining All Methods
+### 6. FT-RoBERTa — Fine-tuned RoBERTa with Regression Head
+Regression fine-tuning of RoBERTa-base for STR score prediction.
+**Hyperparameters**: batch_size=24, epochs=24, lr=2e-5, MSE loss
+**Paper Performance**: ~83.6% Spearman (strongest individual method)
+
+```sh
+$ python finetune.py --model_name roberta --track a --tgt_lan eng --seed 0
+$ python main.py --track a --tgt_lan eng --method roberta --seed 0
+```
+Output: `res/results/a/eng/roberta/0/pred_eng_a.csv`
+
+### 7. Ensemble — XGBoost Combining All Methods (XGB-4Ms)
 
 The paper's best system combines predictions from all five methods using XGBoost:
 
 ```sh
-$ python -m src.methods.ensemble --track a --tgt_lan eng --seed 0 --methods base,sbert,pi,t5,gpt2
+$ python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,t5,gpt2,roberta
 ```
 
 **Hyperparameters**:
@@ -185,12 +198,12 @@ For non-English languages, `finetune.py` (for MPNet) augments training data with
 
 ## Ensemble Strategy
 
-The ensemble combines predictions from:
+The XGB-4Ms ensemble combines predictions from:
 1. **Base** (Dice coefficient): ~41% Spearman — simple baseline
-2. **FT-MPNet** (Contrastive): ~83% Spearman — strong single method
-3. **PI** (Paraphrase ID): ~51% Spearman — stable, diverse signal
-4. **FT-T5** (Regression): ~66% Spearman — general-purpose LLM
-5. **FT-GPT2** (Regression): ~66% Spearman — autoregressive variant
+2. **FT-MPNet** (Contrastive): ~84.9% Spearman — strong single method
+3. **FT-T5** (Regression): ~82.3% Spearman — general-purpose LLM
+4. **FT-GPT2** (Regression): ~82.9% Spearman — autoregressive variant
+5. **FT-RoBERTa** (Regression): ~83.6% Spearman — strongest individual method
 
 XGBoost learns to weight these methods optimally, achieving **0.854 Spearman** by leveraging their complementary strengths.
 
