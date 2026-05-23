@@ -91,7 +91,7 @@ def get_model(config):
             config.RESOURCE_PATH, 'ckpts', config.track, config.tgt_lan,
             config.method, model_name, str(config.seed)
         )
-        tokenizer = AutoTokenizer.from_pretrained(ckpt_path)
+        tokenizer = AutoTokenizer.from_pretrained(model_id)
         model = AutoModelForSequenceClassification.from_pretrained(ckpt_path).to(device)
         model.eval()
 
