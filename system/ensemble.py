@@ -126,6 +126,7 @@ def ensemble_method(config, methods, seed=0):
     # Load training predictions from all methods
     print(f'\nLoading training predictions from {len(methods)} methods...')
     train_predictions = []
+    loaded_methods = []
     for method in methods:
         method_config = Config()
         method_config.update_config(track=config.track, tgt_lan=config.tgt_lan, method=method, seed=seed)
@@ -137,6 +138,7 @@ def ensemble_method(config, methods, seed=0):
 
         preds = load_predictions(pred_path)
         train_predictions.append(preds)
+        loaded_methods.append(method)
         print(f'  {method}: {len(preds)} samples loaded')
 
     if not train_predictions:
@@ -194,7 +196,7 @@ def ensemble_method(config, methods, seed=0):
 
     # Feature importance
     print(f'\nFeature importance:')
-    for i, method in enumerate(methods):
+    for i, method in enumerate(loaded_methods):
         importance = model.feature_importances_[i]
         print(f'  {method}: {importance:.4f}')
 
