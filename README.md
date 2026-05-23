@@ -57,16 +57,6 @@ Additional methods explored: PI (Paraphrase Identification), NLI (Natural Langua
 
 ```
 
-## Core Team
-
-**Lead Authors**:
-* **Ning Shi** (mrshininnnnn@gmail.com) - Integration & Orchestration
-* **Senyu Li** - Fine-tuning Experiments & Hyperparameter Tuning
-* **Guoqing Luo** - Data Processing & Analysis
-
-**Contributors**:
-* Amirreza Mirzaei, Ali Rafiei, Jai Riley, Hadi Sheikhi, Mahvash Siavashpour, Mohammad Tavakoli, Bradley Hauer, Grzegorz Kondrak
-
 ## Usage
 
 ### Full Reproduction (Recommended)
@@ -119,13 +109,8 @@ Full dependencies in `system/requirements.txt`.
 
 See `system/res/README.md` for detailed setup instructions.
 
-## Key Results
-
-**Track A (English)**:
-- Dev: 0.854 Spearman (XGB-4Ms)
-- Test: 0.856 Spearman
-
-**Multilingual** (Track C): Achieves competitive results across 14 languages using translation-based augmentation.
+## Author
+Ning Shi — mrshininnnnn@gmail.com
 
 ## Citation
 
