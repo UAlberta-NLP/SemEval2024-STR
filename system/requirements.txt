@@ -9,3 +9,4 @@ accelerate
 huggingface-hub
 lightning
 torchmetrics
+sentencepiece
