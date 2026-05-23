@@ -144,9 +144,10 @@ def generate_predictions(track, tgt_lan, seed):
     for method in methods:
         cmd = f'python main.py --track {track} --tgt_lan {tgt_lan} --method {method} --seed {seed}'
         print(f'\nGenerating predictions: {method}...')
-        result = subprocess.run(cmd, shell=True, capture_output=True)
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         if result.returncode != 0:
             print(f'  WARNING: Prediction generation for {method} failed')
+            print(result.stderr[-1000:] if result.stderr else '')
         else:
             print(f'  ✓ {method} predictions saved')
 

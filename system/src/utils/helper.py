@@ -44,6 +44,13 @@ def zip_file(file_in, file_out):
             , arcname=os.path.basename(file_in)
             )
 
+METHOD_MODEL_IDS = {
+    'sbert': 'sentence-transformers/all-mpnet-base-v2',
+    't5': 't5-base',
+    'gpt2': 'gpt2',
+    'roberta': 'roberta-base',
+}
+
 def get_model(config):
     import base
     import torch
@@ -51,14 +58,43 @@ def get_model(config):
 
     if config.method == 'base':
         return base.Model()
-    elif config.method in ['t5', 'gpt2', 'roberta']:
-        # Load fine-tuned regression models
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        tokenizer = AutoTokenizer.from_pretrained(config.CKPT_PATH)
-        model = AutoModelForSequenceClassification.from_pretrained(config.CKPT_PATH).to(device)
+
+    elif config.method == 'sbert':
+        from sentence_transformers import SentenceTransformer
+        model_id = METHOD_MODEL_IDS['sbert']
+        model_name = model_id.replace('/', '_')
+        ckpt_path = os.path.join(
+            config.RESOURCE_PATH, 'ckpts', config.track, config.tgt_lan,
+            'sbert', model_name, str(config.seed)
+        )
+        model = SentenceTransformer(ckpt_path)
         model.eval()
 
-        # Wrapper class for fine-tuned models
+        class SBERTModel:
+            def __init__(self, model):
+                self.model = model
+
+            def predict(self, xs1, xs2):
+                embeddings1 = self.model.encode(xs1, convert_to_tensor=True)
+                embeddings2 = self.model.encode(xs2, convert_to_tensor=True)
+                from sentence_transformers import util
+                scores = util.cos_sim(embeddings1, embeddings2).diagonal().tolist()
+                return [max(0.0, min(1.0, s)) for s in scores]
+
+        return SBERTModel(model)
+
+    elif config.method in ['t5', 'gpt2', 'roberta']:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        model_id = METHOD_MODEL_IDS[config.method]
+        model_name = model_id.replace('/', '_')
+        ckpt_path = os.path.join(
+            config.RESOURCE_PATH, 'ckpts', config.track, config.tgt_lan,
+            config.method, model_name, str(config.seed)
+        )
+        tokenizer = AutoTokenizer.from_pretrained(ckpt_path)
+        model = AutoModelForSequenceClassification.from_pretrained(ckpt_path).to(device)
+        model.eval()
+
         class FinetunedModel:
             def __init__(self, model, tokenizer, device):
                 self.model = model
@@ -76,12 +112,12 @@ def get_model(config):
                         encodings = {k: v.to(self.device) for k, v in encodings.items()}
                         outputs = self.model(**encodings)
                         score = outputs.logits.squeeze().item()
-                        # Clip score to [0, 1] range
                         score = max(0.0, min(1.0, score))
                         predictions.append(score)
                 return predictions
 
         return FinetunedModel(model, tokenizer, device)
+
     else:
         raise NotImplementedError(f"Method '{config.method}' not implemented in get_model(). Use method-specific scripts: pi.py, nli.py, finetune.py")
 
