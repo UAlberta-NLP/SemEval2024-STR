@@ -42,6 +42,19 @@ def parse_args():
     return parser.parse_args()
 
 
+def ckpt_exists(track, tgt_lan, method, model_id, seed):
+    """Check if a checkpoint already exists for this method."""
+    model_name = model_id.replace('/', '_')
+    ckpt_path = os.path.join('res', 'ckpts', track, tgt_lan, method, model_name, str(seed))
+    return os.path.isdir(ckpt_path) and bool(os.listdir(ckpt_path))
+
+
+def result_exists(track, tgt_lan, method, seed):
+    """Check if prediction results already exist for this method."""
+    result_path = os.path.join('res', 'results', track, tgt_lan, method, str(seed), f'pred_{tgt_lan}_{track}.csv')
+    return os.path.exists(result_path)
+
+
 def run_command(cmd, description):
     """
     Execute a shell command and report progress.
@@ -69,36 +82,54 @@ def run_command(cmd, description):
 
 def train_base_method(track, tgt_lan, seed):
     """Train baseline (Dice coefficient) method."""
+    if result_exists(track, tgt_lan, 'base', seed):
+        print(f'\n[1/6] Baseline Method (Dice Coefficient) — skipping (results found)')
+        return True
     cmd = f'python main.py --track {track} --tgt_lan {tgt_lan} --method base --seed {seed}'
     return run_command(cmd, f'[1/6] Baseline Method (Dice Coefficient)')
 
 
 def train_mpnet(track, tgt_lan, seed):
     """Fine-tune MPNet with contrastive loss."""
+    if ckpt_exists(track, tgt_lan, 'sbert', 'sentence-transformers/all-mpnet-base-v2', seed):
+        print(f'\n[2/6] Fine-tune MPNet (Sentence Transformers) — skipping (checkpoint found)')
+        return True
     cmd = f'python finetune.py --model_name mpnet --track {track} --tgt_lan {tgt_lan} --seed {seed}'
     return run_command(cmd, f'[2/6] Fine-tune MPNet (Sentence Transformers)')
 
 
 def train_pi(track, tgt_lan, seed):
     """Train PI (Paraphrase Identification) with RoBERTa."""
+    if ckpt_exists(track, tgt_lan, 'pi', 'roberta-base', seed):
+        print(f'\n[3/6] Paraphrase Identification (RoBERTa) — skipping (checkpoint found)')
+        return True
     cmd = f'python pi.py --track {track} --tgt_lan {tgt_lan} --seed {seed}'
     return run_command(cmd, f'[3/6] Paraphrase Identification (RoBERTa)')
 
 
 def train_t5(track, tgt_lan, seed):
     """Fine-tune T5 with regression head."""
+    if ckpt_exists(track, tgt_lan, 't5', 't5-base', seed):
+        print(f'\n[4/6] Fine-tune T5 (Regression) — skipping (checkpoint found)')
+        return True
     cmd = f'python finetune.py --model_name t5 --track {track} --tgt_lan {tgt_lan} --seed {seed}'
     return run_command(cmd, f'[4/6] Fine-tune T5 (Regression)')
 
 
 def train_gpt2(track, tgt_lan, seed):
     """Fine-tune GPT-2 with regression head."""
+    if ckpt_exists(track, tgt_lan, 'gpt2', 'gpt2', seed):
+        print(f'\n[5/6] Fine-tune GPT-2 (Regression) — skipping (checkpoint found)')
+        return True
     cmd = f'python finetune.py --model_name gpt2 --track {track} --tgt_lan {tgt_lan} --seed {seed}'
     return run_command(cmd, f'[5/6] Fine-tune GPT-2 (Regression)')
 
 
 def train_roberta(track, tgt_lan, seed):
     """Fine-tune RoBERTa with regression head."""
+    if ckpt_exists(track, tgt_lan, 'roberta', 'roberta-base', seed):
+        print(f'\n[6/6] Fine-tune RoBERTa (Regression) — skipping (checkpoint found)')
+        return True
     cmd = f'python finetune.py --model_name roberta --track {track} --tgt_lan {tgt_lan} --seed {seed}'
     return run_command(cmd, f'[6/6] Fine-tune RoBERTa (Regression)')
 
