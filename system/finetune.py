@@ -46,10 +46,9 @@ from sentence_transformers import (
     SentenceTransformer,
     SentenceTransformerTrainer,
     SentenceTransformerTrainingArguments,
-    evaluation,
-    losses
 )
-from sentence_transformers.training_args import BatchSamplers
+from sentence_transformers.sentence_transformer import evaluation, losses
+from sentence_transformers.sentence_transformer.training_args import BatchSamplers
 # private
 from config import Config
 from src.utils import eva, helper
