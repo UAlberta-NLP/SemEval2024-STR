@@ -145,8 +145,3 @@ Ning Shi — mrshininnnnn@gmail.com
 }
 ```
 
-## References
-
-- **Task**: [Semantic Textual Relatedness](https://semantic-textual-relatedness.github.io/)
-- **Dataset**: [SemRel2024 Collection](https://arxiv.org/abs/2402.08638)
-- **Leaderboard**: [SemEval-2024 Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/16799)
