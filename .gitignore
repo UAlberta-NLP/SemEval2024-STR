@@ -18,7 +18,6 @@ backup_senyu/
 .env.dev
 settings.local.json
 AGENTS.md
-assets/paper.pdf
 
 # Resource directories (user-downloaded models and trained checkpoints)
 system/res/ckpts/
