@@ -330,7 +330,7 @@ def finetune_huggingface(config, model_name, model_id, batch_size, epochs, max_l
 
     # Training arguments
     args = TrainingArguments(
-        evaluation_strategy='epoch',
+        eval_strategy='epoch',
         save_strategy='epoch',
         learning_rate=lr,
         per_device_train_batch_size=batch_size,
