@@ -472,5 +472,7 @@ if __name__ == '__main__':
 
     model = train_pi_model(config)
 
-    if model is not None:
-        infer_pi_model(config, model)
+    if model is None:
+        sys.exit(1)
+
+    infer_pi_model(config, model)
