@@ -3,7 +3,7 @@ xgboost
 pandas
 torch
 datasets
-sentence-transformers>=3.3.0
+sentence-transformers
 transformers
 accelerate
 huggingface-hub
