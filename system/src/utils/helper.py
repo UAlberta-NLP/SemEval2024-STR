@@ -98,6 +98,8 @@ def get_model(config):
         ]
         ckpt_path = max(subdirs, key=os.path.getmtime) if subdirs else ckpt_dir
         tokenizer = AutoTokenizer.from_pretrained(model_id)
+        if tokenizer.pad_token is None:
+            tokenizer.pad_token = tokenizer.eos_token
         model = AutoModelForSequenceClassification.from_pretrained(ckpt_path).to(device)
         model.eval()
 

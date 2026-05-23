@@ -92,7 +92,7 @@ def train_ensemble(X_train, y_train, X_val, y_val, seed=0):
         n_estimators=128,
         early_stopping_rounds=32,
         random_state=seed,
-        verbose=False
+        verbosity=0
     )
 
     model.fit(
