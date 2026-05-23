@@ -201,8 +201,7 @@ XGBoost learns to weight these methods optimally, achieving **0.854 Spearman** b
 - **Leaderboard**: [SemEval-2024 Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/16799)
 
 ## Authors
-* **Ning Shi** - mrshininnnnn@gmail.com
-* **Senyu Li**, **Guoqing Luo**, **Amirreza Mirzaei**, **Ali Rafiei**, **Jai Riley**, **Hadi Sheikhi**, **Mahvash Siavashpour**, **Mohammad Tavakoli**, **Bradley Hauer** — University of Alberta
+* Ning Shi - mrshininnnnn@gmail.com
 
 ## BibTeX
 Please use the following BibTeX entry to cite this work:
