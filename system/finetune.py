@@ -214,6 +214,7 @@ def finetune_sentence_transformers(config, model_name, model_id, batch_size, epo
         warmup_steps=128,
         eval_strategy='epoch',
         save_strategy='epoch',
+        save_total_limit=1,
         load_best_model_at_end=True,
         metric_for_best_model='spearman_cosine',
         report_to='none',
@@ -384,6 +385,9 @@ if __name__ == '__main__':
     max_length = args.max_length or model_config['max_length']
     learning_rate = args.learning_rate or model_config['learning_rate']
     special_setup = model_config.get('special_setup')
+
+    # Update config with the actual model and method so CKPT_PATH is correct
+    config.update_config(model=model_id, method=model_config['method_name'])
 
     print('='*50)
     print(f'Fine-tuning Configuration')

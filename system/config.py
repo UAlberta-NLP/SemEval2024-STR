@@ -81,8 +81,9 @@ class Config(object):
         # language model
         self.LM_PATH = os.path.join(self.RESOURCE_PATH, 'lm', self.model)
         # checkpoints
+        model_name = self.model.replace('/', '_')
         self.CKPT_PATH = os.path.join(
-            self.RESOURCE_PATH, 'ckpts', self.track, self.tgt_lan, self.method, self.model, str(self.seed)
+            self.RESOURCE_PATH, 'ckpts', self.track, self.tgt_lan, self.method, model_name, str(self.seed)
             )
         os.makedirs(self.CKPT_PATH, exist_ok=True)
         # results
