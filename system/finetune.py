@@ -69,7 +69,7 @@ MODEL_CONFIGS = {
     't5': {
         'model_id': 't5-base',
         'method_name': 't5',
-        'batch_size': 20,
+        'batch_size': 24,
         'epochs': 16,
         'max_length': 256,
         'learning_rate': 2e-5,
@@ -328,6 +328,9 @@ def finetune_huggingface(config, model_name, model_id, batch_size, epochs, max_l
         predictions = predictions.squeeze()
         return {'spearman': eva.get_spearman_cor(labels, predictions)}
 
+    def preprocess_logits_for_metrics(logits, labels):
+        return logits[0] if isinstance(logits, tuple) else logits
+
     # Training arguments
     args = TrainingArguments(
         eval_strategy='epoch',
@@ -352,6 +355,7 @@ def finetune_huggingface(config, model_name, model_id, batch_size, epochs, max_l
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
         processing_class=tokenizer,
+        preprocess_logits_for_metrics=preprocess_logits_for_metrics,
         compute_metrics=compute_metrics
     )
 
