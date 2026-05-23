@@ -3,6 +3,9 @@
 [![Paper](https://img.shields.io/badge/Paper-ACL%20Anthology-red?style=flat-square)](https://aclanthology.org/2024.semeval-1.254/)
 [![Poster](https://img.shields.io/badge/Poster-PDF-blue?style=flat-square)](assets/poster.pdf)
 [![Slides](https://img.shields.io/badge/Slides-PDF-green?style=flat-square)](assets/slides.pdf)
+[![Task](https://img.shields.io/badge/Task-Semantic%20Textual%20Relatedness-orange?style=flat-square)](https://semantic-textual-relatedness.github.io/)
+[![Dataset](https://img.shields.io/badge/Dataset-SemRel2024-purple?style=flat-square)](https://arxiv.org/abs/2402.08638)
+[![Leaderboard](https://img.shields.io/badge/Leaderboard-SemEval--2024-yellow?style=flat-square)](https://codalab.lisn.upsaclay.fr/competitions/16799)
 
 This repository contains the **1st-place system** for SemEval-2024 Task 1: Semantic Textual Relatedness (Track A English). We investigate semantic relatedness across 14 languages using a diverse ensemble of methods combining explicit semantics, downstream applications, contextual embeddings, and large language models.
 
