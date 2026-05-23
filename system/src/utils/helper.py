@@ -87,10 +87,16 @@ def get_model(config):
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         model_id = METHOD_MODEL_IDS[config.method]
         model_name = model_id.replace('/', '_')
-        ckpt_path = os.path.join(
+        ckpt_dir = os.path.join(
             config.RESOURCE_PATH, 'ckpts', config.track, config.tgt_lan,
             config.method, model_name, str(config.seed)
         )
+        # Trainer saves best model in a checkpoint-N subdirectory
+        subdirs = [
+            os.path.join(ckpt_dir, d) for d in os.listdir(ckpt_dir)
+            if d.startswith('checkpoint-') and os.path.isdir(os.path.join(ckpt_dir, d))
+        ]
+        ckpt_path = max(subdirs, key=os.path.getmtime) if subdirs else ckpt_dir
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         model = AutoModelForSequenceClassification.from_pretrained(ckpt_path).to(device)
         model.eval()
