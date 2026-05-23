@@ -6,9 +6,9 @@ __email__ = 'mrshininnnnn@gmail.com'
 """
 Automated reproduction script for SemEval-2024 Task 1: Semantic Textual Relatedness.
 
-Trains all five methods in sequence (Base, Fine-tuned MPNet, PI, Fine-tuned T5, Fine-tuned GPT-2),
-generates predictions for each, trains an XGBoost ensemble combining all methods,
-and outputs final results with evaluation metrics.
+Trains five methods in sequence (Base, Fine-tuned MPNet, Fine-tuned T5, Fine-tuned GPT-2,
+Fine-tuned RoBERTa), generates predictions for each, trains an XGBoost ensemble (XGB-4Ms)
+combining all methods, and outputs final results with evaluation metrics.
 
 This is the main entry point for reproducing the paper's results.
 
@@ -83,60 +83,51 @@ def run_command(cmd, description):
 def train_base_method(track, tgt_lan, seed):
     """Train baseline (Dice coefficient) method."""
     if result_exists(track, tgt_lan, 'base', seed):
-        print(f'\n[1/6] Baseline Method (Dice Coefficient) — skipping (results found)')
+        print(f'\n[1/5] Baseline Method (Dice Coefficient) — skipping (results found)')
         return True
     cmd = f'python main.py --track {track} --tgt_lan {tgt_lan} --method base --seed {seed}'
-    return run_command(cmd, f'[1/6] Baseline Method (Dice Coefficient)')
+    return run_command(cmd, f'[1/5] Baseline Method (Dice Coefficient)')
 
 
 def train_mpnet(track, tgt_lan, seed):
     """Fine-tune MPNet with contrastive loss."""
     if ckpt_exists(track, tgt_lan, 'sbert', 'sentence-transformers/all-mpnet-base-v2', seed):
-        print(f'\n[2/6] Fine-tune MPNet (Sentence Transformers) — skipping (checkpoint found)')
+        print(f'\n[2/5] Fine-tune MPNet (Sentence Transformers) — skipping (checkpoint found)')
         return True
     cmd = f'python finetune.py --model_name mpnet --track {track} --tgt_lan {tgt_lan} --seed {seed}'
-    return run_command(cmd, f'[2/6] Fine-tune MPNet (Sentence Transformers)')
-
-
-def train_pi(track, tgt_lan, seed):
-    """Train PI (Paraphrase Identification) with RoBERTa."""
-    if ckpt_exists(track, tgt_lan, 'pi', 'roberta-base', seed):
-        print(f'\n[3/6] Paraphrase Identification (RoBERTa) — skipping (checkpoint found)')
-        return True
-    cmd = f'python pi.py --track {track} --tgt_lan {tgt_lan} --seed {seed}'
-    return run_command(cmd, f'[3/6] Paraphrase Identification (RoBERTa)')
+    return run_command(cmd, f'[2/5] Fine-tune MPNet (Sentence Transformers)')
 
 
 def train_t5(track, tgt_lan, seed):
     """Fine-tune T5 with regression head."""
     if ckpt_exists(track, tgt_lan, 't5', 't5-base', seed):
-        print(f'\n[4/6] Fine-tune T5 (Regression) — skipping (checkpoint found)')
+        print(f'\n[3/5] Fine-tune T5 (Regression) — skipping (checkpoint found)')
         return True
     cmd = f'python finetune.py --model_name t5 --track {track} --tgt_lan {tgt_lan} --seed {seed}'
-    return run_command(cmd, f'[4/6] Fine-tune T5 (Regression)')
+    return run_command(cmd, f'[3/5] Fine-tune T5 (Regression)')
 
 
 def train_gpt2(track, tgt_lan, seed):
     """Fine-tune GPT-2 with regression head."""
     if ckpt_exists(track, tgt_lan, 'gpt2', 'gpt2', seed):
-        print(f'\n[5/6] Fine-tune GPT-2 (Regression) — skipping (checkpoint found)')
+        print(f'\n[4/5] Fine-tune GPT-2 (Regression) — skipping (checkpoint found)')
         return True
     cmd = f'python finetune.py --model_name gpt2 --track {track} --tgt_lan {tgt_lan} --seed {seed}'
-    return run_command(cmd, f'[5/6] Fine-tune GPT-2 (Regression)')
+    return run_command(cmd, f'[4/5] Fine-tune GPT-2 (Regression)')
 
 
 def train_roberta(track, tgt_lan, seed):
     """Fine-tune RoBERTa with regression head."""
     if ckpt_exists(track, tgt_lan, 'roberta', 'roberta-base', seed):
-        print(f'\n[6/6] Fine-tune RoBERTa (Regression) — skipping (checkpoint found)')
+        print(f'\n[5/5] Fine-tune RoBERTa (Regression) — skipping (checkpoint found)')
         return True
     cmd = f'python finetune.py --model_name roberta --track {track} --tgt_lan {tgt_lan} --seed {seed}'
-    return run_command(cmd, f'[6/6] Fine-tune RoBERTa (Regression)')
+    return run_command(cmd, f'[5/5] Fine-tune RoBERTa (Regression)')
 
 
 def generate_predictions(track, tgt_lan, seed):
     """Generate predictions for all trained methods."""
-    methods = ['base', 'sbert', 'pi', 't5', 'gpt2', 'roberta']
+    methods = ['base', 'sbert', 't5', 'gpt2', 'roberta']
     print(f'\n{"="*70}')
     print('Generating predictions for all methods')
     print('='*70)
@@ -156,9 +147,9 @@ def generate_predictions(track, tgt_lan, seed):
 
 def train_ensemble(track, tgt_lan, seed):
     """Train XGBoost ensemble combining all method predictions."""
-    methods = 'base,sbert,pi,t5,gpt2,roberta'
+    methods = 'base,sbert,t5,gpt2,roberta'
     cmd = f'python ensemble.py --track {track} --tgt_lan {tgt_lan} --seed {seed} --methods {methods}'
-    return run_command(cmd, f'[7/7] XGBoost Ensemble (All Methods)')
+    return run_command(cmd, f'[6/6] XGBoost Ensemble (XGB-4Ms)')
 
 
 def evaluate_ensemble(config):
@@ -221,7 +212,6 @@ def reproduce_paper(track, tgt_lan, seed, skip_methods=False):
         success = True
         success = train_base_method(track, tgt_lan, seed) and success
         success = train_mpnet(track, tgt_lan, seed) and success
-        success = train_pi(track, tgt_lan, seed) and success
         success = train_t5(track, tgt_lan, seed) and success
         success = train_gpt2(track, tgt_lan, seed) and success
         success = train_roberta(track, tgt_lan, seed) and success
