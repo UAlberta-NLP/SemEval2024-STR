@@ -34,9 +34,14 @@ def init_args():
     parser.add_argument('--tgt_lan', type=str, default='eng'
         , choices= ['eng', 'afr', 'amh', 'arb', 'arq', 'ary', 'esp', 'hau', 'hin', 'ind', 'kin', 'mar', 'pan', 'tel'])
     # method
-    # base for the official baseline method
-    # sbert
-    parser.add_argument('--method', type=str, default='base', choices=['base', 'sbert'])
+    # base - Word overlap baseline (Dice/concept overlap)
+    # pi - Paraphrase identification with RoBERTa (requires: python pi.py)
+    # nli - Natural language inference with RoBERTa (requires: python nli.py)
+    # sbert - Fine-tuned sentence-transformers/MPNet (requires: python finetune.py --model_name mpnet)
+    # t5 - Fine-tuned T5 (requires: python finetune.py --model_name t5)
+    # gpt2 - Fine-tuned GPT-2 (requires: python finetune.py --model_name gpt2)
+    # roberta - Fine-tuned RoBERTa (requires: python finetune.py --model_name roberta)
+    parser.add_argument('--method', type=str, default='base', choices=['base', 'pi', 'nli', 'sbert', 't5', 'gpt2', 'roberta'])
     # model
     # sentence-transformers/all-mpnet-base-v2
     parser.add_argument('--model', type=str, default='sentence-transformers/all-mpnet-base-v2')

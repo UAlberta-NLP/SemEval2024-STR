@@ -1,8 +1,42 @@
 # Self-defined
 ensemble.ipynb
-.DS_Store
 results/
 log/
+
+# Backup directories (team member notebooks, reference-only, user-managed)
+backup/
+backup_hadi/
+backup_ning/
+backup_senyu/
+
+# Claude Code session and development files
+.claude/
+.skills/
+*.local.md
+.development/
+.env.local
+.env.dev
+settings.local.json
+AGENTS.md
+assets/paper.pdf
+
+# Resource directories (user-downloaded models and trained checkpoints)
+system/res/ckpts/
+system/res/lm/
+system/res/log/
+system/res/results/
+tutorial/res/ckpts/
+tutorial/res/lm/
+tutorial/res/log/
+tutorial/res/results/
+
+# Result archives
+*.csv.zip
+*.zip
+
+# macOS metadata (in case any slip through)
+.DS_Store
+**/.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

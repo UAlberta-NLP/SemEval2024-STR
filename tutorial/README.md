@@ -1,5 +1,6 @@
 # SemEval2024-STR - Tutorial
-Welcome to the SemEval 2024 Task 1: Semantic Textual Relatedness (STR) instructions repository. This repository is designed to guide participants through the task, providing resources, source code, and essential documentation for effective participation.
+
+Welcome to the SemEval 2024 Task 1: Semantic Textual Relatedness (STR) tutorial. This simplified educational version demonstrates the core methods for scoring sentence pairs by semantic relatedness. For the production competition system with additional methods (PI, T5, GPT-2), see `system/`.
 
 ## Dependencies
 + Python >= 3.11.7
@@ -29,6 +30,21 @@ To execute the main script and generate results:
 ```sh
 $ python main.py
 ```
+
+## External Resources
+
+- **Official Task**: [SemEval-2024 Task 1: Semantic Textual Relatedness](https://semantic-textual-relatedness.github.io/)
+- **Competition Paper**: [UAlberta at SemEval-2024 Task 1 - 1st Place System](https://aclanthology.org/2024.semeval-1.254)
+- **Leaderboard**: [SemEval-2024 Task 1 Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/16799)
+- **Datasets**: [SemRel2024: Semantic Textual Relatedness Datasets for 14 Languages](https://arxiv.org/abs/2402.08638)
+
+## Advanced Methods
+
+The `system/` directory contains the production competition code with additional methods:
+- **PI (Paraphrase Identification)**: RoBERTa trained on general paraphrase datasets
+- **FT-T5**: Fine-tuned T5 with regression head
+- **FT-GPT2**: Fine-tuned GPT-2 with regression head
+- **Ensemble**: XGBoost combining multiple method predictions
 
 ## Authors
 * **Ning Shi** - mrshininnnnn@gmail.com

@@ -44,12 +44,46 @@ def zip_file(file_in, file_out):
             , arcname=os.path.basename(file_in)
             )
 
-# def get_model(config):
-#     match config.method:
-#         case 'base':
-#             return base.Model()
-#         case _:
-#             raise NotImplementedError
+def get_model(config):
+    import base
+    import torch
+    from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+    if config.method == 'base':
+        return base.Model()
+    elif config.method in ['t5', 'gpt2', 'roberta']:
+        # Load fine-tuned regression models
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        tokenizer = AutoTokenizer.from_pretrained(config.CKPT_PATH)
+        model = AutoModelForSequenceClassification.from_pretrained(config.CKPT_PATH).to(device)
+        model.eval()
+
+        # Wrapper class for fine-tuned models
+        class FinetunedModel:
+            def __init__(self, model, tokenizer, device):
+                self.model = model
+                self.tokenizer = tokenizer
+                self.device = device
+
+            def predict(self, xs1, xs2):
+                predictions = []
+                with torch.no_grad():
+                    for x1, x2 in zip(xs1, xs2):
+                        text = f"{x1}      {x2}"
+                        encodings = self.tokenizer(
+                            text, truncation=True, padding=True, max_length=256, return_tensors='pt'
+                        )
+                        encodings = {k: v.to(self.device) for k, v in encodings.items()}
+                        outputs = self.model(**encodings)
+                        score = outputs.logits.squeeze().item()
+                        # Clip score to [0, 1] range
+                        score = max(0.0, min(1.0, score))
+                        predictions.append(score)
+                return predictions
+
+        return FinetunedModel(model, tokenizer, device)
+    else:
+        raise NotImplementedError(f"Method '{config.method}' not implemented in get_model(). Use method-specific scripts: pi.py, nli.py, finetune.py")
 
 def seed_everything(seed: int):
     """

@@ -1,4 +1,39 @@
-# SemEval2024-STR - System
+# SemEval2024-STR - Competition System
+
+1st-place system (Track A English) for SemEval-2024 Task 1: Semantic Textual Relatedness. This directory contains the production code for fine-tuning models and generating predictions.
+
+## Quick Start
+
+To reproduce the paper's results with a single command:
+
+```sh
+cd system
+pip install -r requirements.txt
+python reproduce.py --track a --tgt_lan eng --seed 0
+```
+
+This automatically trains all six methods, generates predictions, trains the ensemble, and reports metrics. Expected output: **0.854 Spearman correlation** on Track A English.
+
+## Paper's Official System (XGB-4Ms Ensemble)
+
+The paper's best system combines 4 fine-tuned transformer models using XGBoost:
+
+**Core Methods** (included in reproduce.py):
+1. **Base** (Dice coefficient) — Word overlap baseline
+2. **FT-MPNet** (sbert) — Fine-tuned sentence transformers with contrastive loss (~84.9% Spearman)
+3. **FT-T5** — Fine-tuned T5-base with regression head (~82.3% Spearman)
+4. **FT-GPT2** — Fine-tuned GPT-2 with regression head (~82.9% Spearman)
+5. **FT-RoBERTa** — Fine-tuned RoBERTa-base with regression head (~83.6% Spearman)
+6. **PI** (Paraphrase Identification) — RoBERTa trained on paraphrase data, inferred on STR (~51% Spearman)
+
+**Ensemble**: XGBoost (XGB-4Ms) learns to combine T5, GPT2, RoBERTa, MPNet predictions
+- **Result**: **0.854 Spearman** on Track A English dev set (85.6% on test set)
+- **Command**: `python ensemble.py --track a --tgt_lan eng --seed 0 --methods base,sbert,pi,t5,gpt2,roberta`
+
+**Optional/Exploratory Methods** (available but not in paper's official submission):
+- **NLI** (nli.py) — Natural Language Inference using RoBERTa-NLI classifier (~64% Spearman, underperformed on some languages)
+- **TrackB** (trackb.py) — Unsupervised Track B ensemble combining BERT and RoBERTa
+- **AMR** (amr.py) — Abstract Meaning Representation parsing via external API (graph-based semantics exploration)
 
 ## Dependencies
 Ensure you have the following dependencies installed:
@@ -8,7 +43,9 @@ Ensure you have the following dependencies installed:
 + pandas >= 2.2.2
 + torch >= 2.3.1
 + datasets >= 2.20.0
-+ sentence-transformer >= 3.0.1
++ sentence-transformers >= 3.0.1
++ transformers >= 4.30.0
++ pytorch-lightning >= 2.0.0
 + accelerate >= 0.31.0
 
 ## Setup
@@ -20,56 +57,155 @@ $ pip install --upgrade pip
 $ pip install -r requirements.txt
 ```
 
-## Methods
+### Data and Models
 
-### FT-MPNet
-Run the following command to fine-tune MPNet.
+This repository contains production code but **not** the trained model checkpoints or competition data (they are large). To reproduce the paper:
+
+1. **Download task data** from the [official SemEval-2024 Task 1 competition](https://codalab.lisn.upsaclay.fr/competitions/16799)
+2. **Download paraphrase datasets** for PI training (PIT, QQP, MRPC, PAWS, PARADE)
+3. **Place data** in `res/data/` following the directory structure in `res/README.md`
+4. **Run reproduction script** - trained checkpoints will be generated automatically
+
+See [`res/README.md`](res/README.md) for detailed data setup instructions and directory structure.
+
+## Available Methods (Individual Training)
+
+### 1. Base — Dice Coefficient (Word Overlap)
+Baseline method using word overlap similarity.
+
 ```sh
-$ python sbert.py    
-seed: 0
-track: a
-tgt_lan: eng
-method: base
-model: sentence-transformers/all-mpnet-base-v2
-max_length: 156
-train_batch_size: 32
-learning_rate: 5e-05
-weight_decay: 0.001
-adam_epsilon: 1e-08
-CURR_PATH: ./
-RESOURCE_PATH: ./res
-DATA_PATH: ./res/data
-SCORES_PATH: ./res/scores
-TRACK_PATH: ./res/data/a
-LAN_PATH: ./res/data/a/eng
-TRAIN_CSV: ./res/data/a/eng/eng_train.csv
-DEV_CSV: ./res/data/a/eng/eng_dev.csv
-DEV_LABEL_CSV: ./res/data/a/eng/eng_dev_with_labels.csv
-TEST_CSV: ./res/data/a/eng/eng_test.csv
-TEST_LABEL_CSV: ./res/data/a/eng/eng_test_with_labels.csv
-LM_PATH: ./res/lm/sentence-transformers/all-mpnet-base-v2
-CKPT_PATH: ./res/ckpts/a/eng/base/sentence-transformers/all-mpnet-base-v2/0
-LOG_PATH: ./res/log/a/eng/base/0
-LOG_TXT: ./res/log/a/eng/base/0/console_log.txt
-RESULTS_PATH: ./res/results/a/eng/base/0
-RESULTS_CSV: ./res/results/a/eng/base/0/pred_eng_a.csv
-RESULTS_ZIP: ./res/results/a/eng/base/0/pred_eng_a.csv.zip
-Target Language eng
-If MIX False
-Train Size 5500 5500 5500
-Val Size 250 250 250
-  0%|                                                                     | 1/5472 [00:04<6:31:47,  4.30s/it]
+$ python main.py --track a --tgt_lan eng --method base --seed 0
+```
+Output: `res/results/a/eng/base/0/pred_eng_a.csv`
+
+### 2. FT-MPNet — Fine-tuned Sentence Transformers
+Fine-tunes `sentence-transformers/all-mpnet-base-v2` with contrastive loss on STR data.
+**Paper Performance**: ~83% Spearman on English Track A
+
+```sh
+$ python finetune.py --model_name mpnet --track a --tgt_lan eng --seed 0
+$ python main.py --track a --tgt_lan eng --method sbert --seed 0
+```
+Output: `res/results/a/eng/sbert/0/pred_eng_a.csv`
+
+### 3. PI — Paraphrase Identification
+Two-phase approach: trains RoBERTa binary classifier on general paraphrase datasets (PIT, QQP, MRPC, PAWS, PARADE), then infers on STR task using bidirectional probability averaging.
+
+**Phase 1 - Training** (standalone, no STR data):
+```sh
+$ python pi.py --track a --tgt_lan eng --seed 0
+```
+Trains on: `res/data/paraphrase/{pit,qqp,mrpc,paws_qqp,paws_wiki,parade}_train.csv`
+Checkpoint: `res/ckpts/a/eng/pi/roberta-base/0/lightning_logs/version_0/checkpoints/`
+
+**Phase 2 - Inference** (automatic):
+Loads trained checkpoint and applies to STR task using bidirectional scoring:
+```
+score = avg(P(paraphrase|text1,text2), P(paraphrase|text2,text1))
+```
+Output: `res/results/a/eng/pi/0/pred_eng_a.csv`
+**Paper Performance**: ~51% Spearman (stable across tasks, useful for ensemble)
+
+### 3b. NLI — Natural Language Inference (Optional)
+Reduces STR to recognizing textual entailment using an off-the-shelf RoBERTa NLI classifier trained on SNLI, MNLI, FEVER, ANLI datasets.
+
+**Approach**: Bidirectional entailment probability averaging
+```
+score = avg(P(entailment|text1→text2), P(entailment|text2→text1))
 ```
 
-### Ensemble Modules
+```sh
+$ python nli.py --track a --tgt_lan eng --seed 0
+```
+Output: `res/results/a/eng/nli/0/pred_eng_a.csv`
+**Paper Performance**: ~64% Spearman (not included in final ensemble)
 
-TODO
+**Note**: NLI was tested but underperformed on some languages and was not competitive with other methods, so it was excluded from the best ensemble system.
+
+### 4. FT-T5 — Fine-tuned T5 with Regression Head
+Regression fine-tuning of T5-base for STR score prediction.
+**Hyperparameters**: batch_size=20, epochs=16, lr=2e-5, MSE loss
+**Paper Performance**: ~66% Spearman
+
+```sh
+$ python finetune.py --model_name t5 --track a --tgt_lan eng --seed 0
+$ python main.py --track a --tgt_lan eng --method t5 --seed 0
+```
+Output: `res/results/a/eng/t5/0/pred_eng_a.csv`
+
+### 5. FT-GPT2 — Fine-tuned GPT-2 with Regression Head
+Regression fine-tuning of GPT-2 for STR score prediction.
+**Hyperparameters**: batch_size=24, epochs=24, lr=2e-5, MSE loss
+**Paper Performance**: ~66% Spearman
+
+```sh
+$ python finetune.py --model_name gpt2 --track a --tgt_lan eng --seed 0
+$ python main.py --track a --tgt_lan eng --method gpt2 --seed 0
+```
+Output: `res/results/a/eng/gpt2/0/pred_eng_a.csv`
+
+## Data Format
+
+**Input CSVs** (`res/data/{track}/{language}/{lang}_{split}.csv`):
+```
+PairID,Text,Score
+1,"text1
+text2",0.85
+```
+
+**Output CSVs** (`res/results/{track}/{language}/{method}/{seed}/pred_{lang}_{track}.csv`):
+```
+PairID,Pred_Score
+1,0.87
+```
+
+### 6. Ensemble — XGBoost Combining All Methods
+
+The paper's best system combines predictions from all five methods using XGBoost:
+
+```sh
+$ python -m src.methods.ensemble --track a --tgt_lan eng --seed 0 --methods base,sbert,pi,t5,gpt2
+```
+
+**Hyperparameters**:
+- Objective: squared error regression
+- Learning rate: 0.1
+- Max depth: 8
+- Column sample: 0.1
+- Estimators: 128
+- Early stopping: 32 rounds on 10% validation set
+
+**Paper Performance**: **0.854 Spearman** on English Track A (best reported)
+
+Output: `res/results/a/eng/ensemble/0/pred_eng_a.csv`
+
+## Non-English Training
+
+For non-English languages, `finetune.py` (for MPNet) augments training data with English translations from `res/data/trans/{lang}2eng_{split}.csv` to leverage English-specific pre-training.
+
+## Ensemble Strategy
+
+The ensemble combines predictions from:
+1. **Base** (Dice coefficient): ~41% Spearman — simple baseline
+2. **FT-MPNet** (Contrastive): ~83% Spearman — strong single method
+3. **PI** (Paraphrase ID): ~51% Spearman — stable, diverse signal
+4. **FT-T5** (Regression): ~66% Spearman — general-purpose LLM
+5. **FT-GPT2** (Regression): ~66% Spearman — autoregressive variant
+
+XGBoost learns to weight these methods optimally, achieving **0.854 Spearman** by leveraging their complementary strengths.
+
+## References
+
+- **Paper**: [UAlberta at SemEval-2024 Task 1](https://aclanthology.org/2024.semeval-1.254)
+- **Task**: [SemEval-2024 Task 1: Semantic Textual Relatedness](https://semantic-textual-relatedness.github.io/)
+- **Leaderboard**: [SemEval-2024 Leaderboard](https://codalab.lisn.upsaclay.fr/competitions/16799)
 
 ## Authors
 * **Ning Shi** - mrshininnnnn@gmail.com
+* **Senyu Li**, **Guoqing Luo**, **Amirreza Mirzaei**, **Ali Rafiei**, **Jai Riley**, **Hadi Sheikhi**, **Mahvash Siavashpour**, **Mohammad Tavakoli**, **Bradley Hauer** — University of Alberta
 
-## BibTex
-Please use the following BibTeX entry to cite us:
+## BibTeX
+Please use the following BibTeX entry to cite this work:
 ```bibtex
 @inproceedings{shi-etal-2024-ualberta,
     title = "{UA}lberta at {S}em{E}val-2024 Task 1: A Potpourri of Methods for Quantifying Multilingual Semantic Textual Relatedness and Similarity",
