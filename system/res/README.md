@@ -181,9 +181,3 @@ res/data/trans/
 
 These translations are typically from Google Translate API (applied during training).
 
-## References
-
-- **Official Task**: https://semantic-textual-relatedness.github.io/
-- **Paper**: [UAlberta at SemEval-2024 Task 1](https://aclanthology.org/2024.semeval-1.254)
-- **Dataset Paper**: [SemRel2024 Collection](https://arxiv.org/abs/2402.08638)
-- **Leaderboard**: https://codalab.lisn.upsaclay.fr/competitions/16799
