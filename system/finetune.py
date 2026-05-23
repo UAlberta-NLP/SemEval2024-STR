@@ -35,7 +35,7 @@ import csv
 import torch
 import numpy as np
 import pandas as pd
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
@@ -44,10 +44,12 @@ from transformers import (
 )
 from sentence_transformers import (
     SentenceTransformer,
-    InputExample,
+    SentenceTransformerTrainer,
+    SentenceTransformerTrainingArguments,
     evaluation,
     losses
 )
+from sentence_transformers.training_args import BatchSamplers
 # private
 from config import Config
 from src.utils import eva, helper
@@ -192,9 +194,10 @@ def finetune_sentence_transformers(config, model_name, model_id, batch_size, epo
     print(f'Train Size: {len(train_xs1)}')
     print(f'Val Size: {len(val_xs1)}')
 
-    # Create InputExamples
-    train_set = [InputExample(texts=[text1, text2], label=score) for text1, text2, score in zip(train_xs1, train_xs2, train_ys)]
-    train_dataloader = DataLoader(train_set, batch_size=batch_size, shuffle=True, pin_memory=True, drop_last=True)
+    # Build datasets using sentence-transformers v3 API
+    from datasets import Dataset as HFDataset
+    train_hf = HFDataset.from_dict({'sentence1': train_xs1, 'sentence2': train_xs2, 'label': train_ys})
+    val_hf = HFDataset.from_dict({'sentence1': val_xs1, 'sentence2': val_xs2, 'label': val_ys})
 
     # Loss and evaluator
     train_loss = losses.CosineSimilarityLoss(model)
@@ -202,18 +205,31 @@ def finetune_sentence_transformers(config, model_name, model_id, batch_size, epo
 
     # Fine-tune
     print(f'\nFine-tuning with: batch_size={batch_size}, epochs={epochs}, lr={lr}')
-    model.fit(
-        train_objectives=[(train_dataloader, train_loss)],
-        epochs=epochs,
+    training_args = SentenceTransformerTrainingArguments(
+        output_dir=config.CKPT_PATH,
+        num_train_epochs=epochs,
+        per_device_train_batch_size=batch_size,
+        per_device_eval_batch_size=batch_size,
+        learning_rate=lr,
+        adam_epsilon=1e-8,
         warmup_steps=128,
-        optimizer_class=torch.optim.AdamW,
-        optimizer_params={'lr': lr, 'eps': 1e-8},
-        evaluation_steps=512,
-        evaluator=evaluator,
-        output_path=config.CKPT_PATH,
-        save_best_model=True,
-        show_progress_bar=True,
+        eval_strategy='epoch',
+        save_strategy='epoch',
+        load_best_model_at_end=True,
+        metric_for_best_model='spearman_cosine',
+        report_to='none',
+        batch_sampler=BatchSamplers.NO_DUPLICATES,
     )
+    trainer = SentenceTransformerTrainer(
+        model=model,
+        args=training_args,
+        train_dataset=train_hf,
+        eval_dataset=val_hf,
+        loss=train_loss,
+        evaluator=evaluator,
+    )
+    trainer.train()
+    model.save(config.CKPT_PATH)
     print(f'\nTraining completed! Model saved to: {config.CKPT_PATH}')
 
 
